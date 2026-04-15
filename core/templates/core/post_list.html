@@ -1,0 +1,131 @@
+<!--
+'''
+File: post_list.html
+Description:
+    Posts listing page with search and responsive cards.
+
+Features:
+    - Search form
+    - Bilingual content display
+    - Modern cards layout
+    - Hover interactions
+'''
+-->
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == 'en' %}Posts | Blogger{% else %}المقالات | Blogger{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page hero -->
+<section class="page-hero">
+    <div class="container reveal-up">
+        <span class="section-subtitle">
+            {% if current_lang == 'en' %}Content Library{% else %}مكتبة المحتوى{% endif %}
+        </span>
+
+        <h1>
+            {% if current_lang == 'en' %}Explore All Articles{% else %}استعرض جميع المقالات{% endif %}
+        </h1>
+
+        <p>
+            {% if current_lang == 'en' %}
+                Browse published posts, search by title or author, and discover content in a premium reading experience.
+            {% else %}
+                تصفح المقالات المنشورة، وابحث بالعنوان أو اسم الكاتب، واستعرض المحتوى بتجربة قراءة حديثة وأنيقة.
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<!-- Search section -->
+<section class="search-section">
+    <div class="container reveal-up">
+        <form method="get" class="search-form">
+            <input type="hidden" name="lang" value="{{ current_lang }}">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                placeholder="{% if current_lang == 'en' %}Search by title, content, or author{% else %}ابحث بالعنوان أو المحتوى أو اسم الكاتب{% endif %}"
+            >
+
+            <button type="submit">
+                {% if current_lang == 'en' %}Search{% else %}بحث{% endif %}
+            </button>
+        </form>
+    </div>
+</section>
+
+<!-- Posts section -->
+<section class="posts-list-section">
+    <div class="container">
+        <div class="posts-grid">
+            {% for post in posts %}
+                <article class="post-card reveal-up tilt-card">
+                    <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}" class="post-image-wrapper">
+                        {% if post.cover_image %}
+                            <img src="{{ post.cover_image.url }}" alt="{% if current_lang == 'en' %}{{ post.title_en }}{% else %}{{ post.title_ar }}{% endif %}">
+                        {% else %}
+                            <img src="{% static 'images/default-post.jpg' %}" alt="Default image">
+                        {% endif %}
+                    </a>
+
+                    <div class="post-card-content">
+                        <div class="post-meta">
+                            <span>{{ post.published_at|date:"d M Y" }}</span>
+
+                            <a href="{% url 'core:author_profile' post.author.username %}?lang={{ current_lang }}" class="author-link">
+                                {{ post.author.username }}
+                            </a>
+                        </div>
+
+                        <h3>
+                            <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}">
+                                {% if current_lang == 'en' %}
+                                    {{ post.title_en }}
+                                {% else %}
+                                    {{ post.title_ar }}
+                                {% endif %}
+                            </a>
+                        </h3>
+
+                        <p>
+                            {% if current_lang == 'en' %}
+                                {{ post.content_en|truncatechars:150 }}
+                            {% else %}
+                                {{ post.content_ar|truncatechars:150 }}
+                            {% endif %}
+                        </p>
+
+                        <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}" class="read-more-link">{% if current_lang == 'en' %}Open Post{% else %}عرض المقال{% endif %}
+                        </a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-state reveal-up">
+                    <h3>
+                        {% if current_lang == 'en' %}No results found{% else %}لا توجد نتائج{% endif %}
+                    </h3>
+                    <p>
+                        {% if current_lang == 'en' %}
+                            Try another keyword or publish your first article.
+                        {% else %}
+                            جرب كلمة بحث أخرى أو ابدئ بإضافة أول مقالة.
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

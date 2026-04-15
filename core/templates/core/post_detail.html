@@ -1,0 +1,154 @@
+<!--
+'''
+File: post_detail.html
+Description:
+    Single post detail page with media, author info, and comments.
+
+Features:
+    - Bilingual content rendering
+    - Cover image display
+    - Video display
+    - Author profile link
+    - Comment form
+    - Owner actions
+'''
+-->
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == 'en' %}
+        {{ post.title_en }} | Blogger
+    {% else %}
+        {{ post.title_ar }} | Blogger
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Post detail section -->
+<section class="post-detail-section">
+    <div class="container">
+        <article class="post-detail-card reveal-up">
+
+
+            <div class="post-detail-meta">
+                <span>{{ post.published_at|date:"d M Y - h:i A" }}</span>
+
+                <a href="{% url 'core:author_profile' post.author.username %}?lang={{ current_lang }}" class="author-link">
+                    {{ post.author.username }}
+                </a>
+            </div>
+
+            <h1>
+                {% if current_lang == 'en' %}
+                    {{ post.title_en }}
+                {% else %}
+                    {{ post.title_ar }}
+                {% endif %}
+            </h1>
+
+            {% if post.cover_image %}
+                <div class="post-media reveal-up">
+                    <img
+                        src="{{ post.cover_image.url }}"
+                        alt="{% if current_lang == 'en' %}{{ post.title_en }}{% else %}{{ post.title_ar }}{% endif %}"
+                        class="detail-cover-image"
+                    >
+                </div>
+            {% endif %}
+
+            {% if post.video %}
+                <div class="post-media reveal-up">
+                    <video controls class="detail-video">
+                        <source src="{{ post.video.url }}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            {% endif %}
+
+
+            <div class="post-body reveal-up">
+                {% if current_lang == 'en' %}
+                    {{ post.content_en|linebreaks }}
+                {% else %}
+                    {{ post.content_ar|linebreaks }}
+                {% endif %}
+            </div>
+
+
+            {% if request.user == post.author %}
+                <div class="detail-actions reveal-up">
+                    <a href="{% url 'core:post_update' post.id %}?lang={{ current_lang }}" class="primary-btn">
+                        {% if current_lang == 'en' %}Edit Post{% else %}تعديل المقال{% endif %}
+                    </a>
+
+                    <a href="{% url 'core:post_delete' post.id %}?lang={{ current_lang }}" class="secondary-btn">
+                        {% if current_lang == 'en' %}Delete Post{% else %}حذف المقال{% endif %}
+                    </a>
+                </div>
+            {% endif %}
+        </article>
+    </div>
+</section>
+
+<section class="comments-section">
+    <div class="container">
+        <div class="comments-card reveal-up">
+            <h2>
+                {% if current_lang == 'en' %}Comments{% else %}التعليقات{% endif %}
+            </h2>
+
+            {% if request.user.is_authenticated %}
+                <form method="post" class="custom-form">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+
+                    <button type="submit" class="primary-btn">
+                        {% if current_lang == 'en' %}Send Comment{% else %}إرسال التعليق{% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <p class="muted-text">
+                    <a href="{% url 'core:login' %}?lang={{ current_lang }}">
+                        {% if current_lang == 'en' %}Login{% else %}سجّل الدخول{% endif %}
+                    </a>
+                    {% if current_lang == 'en' %}
+                        to write a comment.
+                    {% else %}
+                        لكتابة تعليق.
+                    {% endif %}
+                </p>
+            {% endif %}
+
+            <div class="comments-list">
+                {% for comment in comments %}
+                    <div class="comment-box reveal-up">
+                        <div class="comment-head">
+                            <strong>{{ comment.author.username }}</strong>
+                            <span>{{ comment.created_at|date:"d M Y - h:i A" }}</span>
+                        </div>
+
+                        <p>{{ comment.content|linebreaks }}</p>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <p>
+                            {% if current_lang == 'en' %}
+                                No comments yet.
+                            {% else %}
+                                لا توجد تعليقات بعد.
+                            {% endif %}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

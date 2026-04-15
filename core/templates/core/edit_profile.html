@@ -1,0 +1,160 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == 'en' %}
+        Edit Profile | Blogger
+    {% else %}
+        تعديل الحساب | Blogger
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="edit-profile-section">
+    <div class="container">
+        <div class="edit-profile-card">
+
+            <div class="edit-profile-header">
+                <span class="section-badge">
+                    {% if current_lang == 'en' %}My Account{% else %}حسابي{% endif %}
+                </span>
+
+                <h1>
+                    {% if current_lang == 'en' %}
+                        Edit your profile
+                    {% else %}
+                        تعديل بيانات الحساب
+                    {% endif %}
+                </h1>
+
+                <p>
+                    {% if current_lang == 'en' %}
+                        Update your account information, profile image, display name, and personal bio.
+                    {% else %}
+                        عدّل معلومات حسابك، الصورة الشخصية، الاسم المعروض، والنبذة التعريفية.
+                    {% endif %}
+                </p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="edit-profile-form">
+                {% csrf_token %}
+
+                {% if user_form.non_field_errors or profile_form.non_field_errors %}
+                    <div class="form-errors full-width">
+                        {{ user_form.non_field_errors }}
+                        {{ profile_form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="form-group full-width avatar-group">
+                    <label for="{{ profile_form.avatar.id_for_label }}">
+                        {% if current_lang == 'en' %}Profile Image{% else %}الصورة الشخصية{% endif %}
+                    </label>
+
+                    <div class="avatar-preview-box">
+                        {% if request.user.profile.avatar %}
+                            <img src="{{ request.user.profile.avatar.url }}" alt="{{ request.user.username }}" class="avatar-preview">
+                        {% else %}
+                            <div class="avatar-placeholder">
+                                {{ request.user.username|first|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {{ profile_form.avatar }}
+
+                    {% if profile_form.avatar.errors %}
+                        <div class="field-error">
+                            {{ profile_form.avatar.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ user_form.username.id_for_label }}">
+                        {% if current_lang == 'en' %}Username{% else %}اسم المستخدم{% endif %}
+                    </label>
+
+                    {{ user_form.username }}
+
+                    {% if user_form.username.errors %}
+                        <div class="field-error">
+                            {{ user_form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ user_form.email.id_for_label }}">
+                        {% if current_lang == 'en' %}Email{% else %}البريد الإلكتروني{% endif %}
+                    </label>
+
+                    {{ user_form.email }}
+
+                    {% if user_form.email.errors %}
+                        <div class="field-error">
+                            {{ user_form.email.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="{{ profile_form.display_name.id_for_label }}">
+                        {% if current_lang == 'en' %}Display Name{% else %}الاسم المعروض{% endif %}</label>
+
+                    {{ profile_form.display_name }}
+
+                    {% if profile_form.display_name.errors %}
+                        <div class="field-error">
+                            {{ profile_form.display_name.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="{{ profile_form.bio_ar.id_for_label }}">
+                        {% if current_lang == 'en' %}Arabic Bio{% else %}النبذة بالعربية{% endif %}
+                    </label>
+
+                    {{ profile_form.bio_ar }}
+
+                    {% if profile_form.bio_ar.errors %}
+                        <div class="field-error">
+                            {{ profile_form.bio_ar.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="{{ profile_form.bio_en.id_for_label }}">
+                        {% if current_lang == 'en' %}English Bio{% else %}النبذة بالإنجليزية{% endif %}
+                    </label>
+
+                    {{ profile_form.bio_en }}
+
+                    {% if profile_form.bio_en.errors %}
+                        <div class="field-error">
+                            {{ profile_form.bio_en.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-actions full-width">
+                    <a href="{% url 'core:profile' %}?lang={{ current_lang }}" class="cancel-btn">
+                        {% if current_lang == 'en' %}Cancel{% else %}إلغاء{% endif %}
+                    </a>
+
+                    <button type="submit" class="save-btn">
+                        {% if current_lang == 'en' %}Save Changes{% else %}حفظ التعديلات{% endif %}
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

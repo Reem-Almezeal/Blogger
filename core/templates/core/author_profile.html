@@ -1,0 +1,142 @@
+<!--
+'''
+File: author_profile.html
+Description:
+    Public profile page for viewing an author's information and published posts.
+
+Features:
+    - Author avatar
+    - Author bio
+    - Published posts grid
+    - Bilingual support
+'''
+-->
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ author_user.username }} | Blogger
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Author profile  -->
+<section class="profile-hero">
+    <div class="container">
+        <div class="profile-card reveal-up">
+
+
+            <div class="profile-avatar-wrapper">
+                {% if author_user.profile.avatar %}
+                    <img src="{{ author_user.profile.avatar.url }}" alt="{{ author_user.username }}" class="profile-avatar">
+                {% else %}
+                    <div class="profile-avatar placeholder-avatar">
+                        {{ author_user.username|first|upper }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="profile-info">
+                <span class="section-subtitle">
+                    {% if current_lang == 'en' %}Author Profile{% else %}حساب الناشر{% endif %}
+                </span>
+
+                <h1>
+                    {% if author_user.profile.display_name %}
+                        {{ author_user.profile.display_name }}
+                    {% else %}
+                        {{ author_user.username }}
+                    {% endif %}
+                </h1>
+
+                <p>
+                    {% if current_lang == 'en' %}
+                        {% if author_user.profile.bio_en %}
+                            {{ author_user.profile.bio_en }}
+                        {% else %}
+                            This author has not added an English bio yet.
+                        {% endif %}
+                    {% else %}
+                        {% if author_user.profile.bio_ar %}
+                            {{ author_user.profile.bio_ar }}
+                        {% else %}
+                            هذا الناشر لم يضف نبذة بالعربية بعد.
+                        {% endif %}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="posts-list-section">
+    <div class="container">
+        <div class="section-head reveal-up">
+            <div>
+                <span class="section-subtitle">
+                    {% if current_lang == 'en' %}Published Posts{% else %}المقالات المنشورة{% endif %}
+                </span>
+
+                <h2>
+                    {% if current_lang == 'en' %}Posts by {{ author_user.username }}{% else %}مقالات {{ author_user.username }}{% endif %}
+                </h2>
+            </div>
+        </div>
+
+        <!-- Posts section -->
+        <div class="posts-grid">
+            {% for post in posts %}
+                <article class="post-card reveal-up tilt-card">
+->
+                    <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}" class="post-image-wrapper">
+                        {% if post.cover_image %}
+                            <img src="{{ post.cover_image.url }}" alt="{% if current_lang == 'en' %}{{ post.title_en }}{% else %}{{ post.title_ar }}{% endif %}">
+                        {% else %}
+                            <img src="{% static 'images/default-post.jpg' %}" alt="Default image">
+                        {% endif %}
+                    </a>
+                    <div class="post-card-content">
+                        <div class="post-meta">
+                            <span>{{ post.published_at|date:"d M Y" }}</span>
+                        </div>
+
+                        <h3>
+                            <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}">
+                                {% if current_lang == 'en' %}
+                                    {{ post.title_en }}
+                                {% else %}
+                                    {{ post.title_ar }}
+                                {% endif %}
+                            </a>
+                        </h3>
+
+                        <p>
+                            {% if current_lang == 'en' %}
+                                {{ post.content_en|truncatechars:120 }}
+                            {% else %}
+                                {{ post.content_ar|truncatechars:120 }}
+                            {% endif %}
+                        </p>
+
+                        <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}" class="read-more-link">
+                            {% if current_lang == 'en' %}Read More{% else %}اقرأ المزيد{% endif %}
+                        </a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-state reveal-up">
+                    <h3>
+                        {% if current_lang == 'en' %}No published posts yet{% else %}لا توجد مقالات منشورة بعد{% endif %}
+                    </h3>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

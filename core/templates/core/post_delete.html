@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == 'en' %}
+        Delete Post
+    {% else %}
+        حذف المقال
+    {% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Delete section -->
+<section class="page-section">
+    <div class="container">
+        <div class="comments-card delete-card reveal-up">
+
+            <h1>
+                {% if current_lang == 'en' %}
+                    Delete this post?
+                {% else %}
+                    هل تريد حذف هذا المقال؟
+                {% endif %}
+            </h1>
+
+            <p>
+                {% if current_lang == 'en' %}
+                    This action cannot be undone. Once deleted, the post and all its comments will be removed permanently.
+                {% else %}
+                    لا يمكن التراجع عن هذا الإجراء. عند حذف المقال سيتم حذف جميع التعليقات المرتبطة به بشكل نهائي.
+                {% endif %}
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="delete-actions">
+                    <button type="submit" class="secondary-btn">
+                        {% if current_lang == 'en' %}
+                            Yes, Delete
+                        {% else %}
+                            نعم، احذف
+                        {% endif %}
+                    </button>
+
+                    <a href="{% url 'core:post_detail' post.id %}?lang={{ current_lang }}" class="primary-btn">
+                        {% if current_lang == 'en' %}
+                            Cancel
+                        {% else %}
+                            إلغاء
+                        {% endif %}
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

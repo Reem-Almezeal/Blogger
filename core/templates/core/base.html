@@ -1,0 +1,161 @@
+<!--
+'''
+File: base.html
+Description:
+    Shared base template for all pages in the Blogger platform.
+
+Features:
+    - Clean elegant navbar
+    - Language switch
+    - Theme toggle
+    - Mobile menu
+    - Shared footer
+'''
+-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ current_lang|default:'ar' }}" dir="{% if current_lang == 'en' %}ltr{% else %}rtl{% endif %}" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- nav -->
+<header class="navbar-wrapper" id="navbarWrapper">
+    <nav class="navbar container">
+
+        <a href="{% url 'core:home' %}?lang={{ current_lang|default:'ar' }}" class="logo">
+            Blogger
+        </a>
+
+        <div class="nav-links">
+            <a href="{% url 'core:home' %}?lang={{ current_lang|default:'ar' }}">
+                {% if current_lang == 'en' %}Home{% else %}الرئيسية{% endif %}
+            </a>
+
+            <a href="{% url 'core:post_list' %}?lang={{ current_lang|default:'ar' }}">
+                {% if current_lang == 'en' %}Posts{% else %}المقالات{% endif %}
+            </a>
+
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'core:post_create' %}?lang={{ current_lang|default:'ar' }}">
+                    {% if current_lang == 'en' %}Create Post{% else %}إنشاء مقال{% endif %}
+                </a>
+
+                <a href="{% url 'core:profile' %}?lang={{ current_lang|default:'ar' }}">
+                    {% if current_lang == 'en' %}My Profile{% else %}حسابي{% endif %}
+                </a>
+
+                <form method="post" action="{% url 'core:logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">
+                        {% if current_lang == 'en' %}Logout{% else %}تسجيل الخروج{% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'core:login' %}?lang={{ current_lang|default:'ar' }}">
+                    {% if current_lang == 'en' %}Login{% else %}تسجيل الدخول{% endif %}
+                </a>
+
+                <a href="{% url 'core:register' %}?lang={{ current_lang|default:'ar' }}" class="register-link">
+                    {% if current_lang == 'en' %}Register{% else %}إنشاء حساب{% endif %}
+                </a>
+            {% endif %}
+        </div>
+
+
+        <div class="nav-actions">
+            <a href="?lang={% if current_lang == 'en' %}ar{% else %}en{% endif %}" class="lang-btn">
+                {% if current_lang == 'en' %}AR{% else %}EN{% endif %}
+            </a>
+
+            <button id="theme-toggle" class="theme-btn" type="button">
+                ☾
+            </button>
+
+            <button id="menu-toggle" class="menu-btn" type="button">
+                ☰
+            </button>
+        </div>
+    </nav>
+    <div class="mobile-menu container" id="mobileMenu">
+        <a href="{% url 'core:home' %}?lang={{ current_lang|default:'ar' }}">
+            {% if current_lang == 'en' %}Home{% else %}الرئيسية{% endif %}
+        </a>
+
+        <a href="{% url 'core:post_list' %}?lang={{ current_lang|default:'ar' }}">
+            {% if current_lang == 'en' %}Posts{% else %}المقالات{% endif %}
+        </a>
+
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'core:post_create' %}?lang={{ current_lang|default:'ar' }}">
+                {% if current_lang == 'en' %}Create Post{% else %}إنشاء مقال{% endif %}
+            </a>
+
+            <a href="{% url 'core:profile' %}?lang={{ current_lang|default:'ar' }}">
+                {% if current_lang == 'en' %}My Profile{% else %}حسابي{% endif %}
+            </a>
+
+            <form method="post" action="{% url 'core:logout' %}" class="logout-form mobile-logout-form">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn mobile-logout-btn">
+                    {% if current_lang == 'en' %}Logout{% else %}تسجيل الخروج{% endif %}
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'core:login' %}?lang={{ current_lang|default:'ar' }}">
+                {% if current_lang == 'en' %}Login{% else %}تسجيل الدخول{% endif %}
+            </a>
+
+            <a href="{% url 'core:register' %}?lang={{ current_lang|default:'ar' }}">
+                {% if current_lang == 'en' %}Register{% else %}إنشاء حساب{% endif %}
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+    <!-- Main -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <h3>Blogger</h3>
+                <p>
+                    {% if current_lang == 'en' %}
+                        A modern bilingual blogging platform for articles, media, and creators.
+                    {% else %}
+                        منصة تدوين حديثة ثنائية اللغة للمقالات والوسائط وصنّاع المحتوى.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <a href="{% url 'core:home' %}?lang={{ current_lang|default:'ar' }}">
+                    {% if current_lang == 'en' %}Home{% else %}الرئيسية{% endif %}
+                </a>
+                <a href="{% url 'core:post_list' %}?lang={{ current_lang|default:'ar' }}">
+                    {% if current_lang == 'en' %}Posts{% else %}المقالات{% endif %}
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Base JS -->
+    <script src="{% static 'js/base.js' %}"></script>
+
+    <!-- Extra JS -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

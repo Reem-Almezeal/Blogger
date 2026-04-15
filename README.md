@@ -1,18 +1,28 @@
-# LAB-ORM-1
+# Blogger
 
-## Using what you learned , Create a Blog website called `Blogger` . Has the following pages:
-- A homepage : displays the lates posts (Post title, content, date & time published) .
-- A page to add new posts.
+Blogger is a blog website built with Django.  
+It allows users to create, publish, and manage blog posts through a clean and modern interface.
 
+## Features
 
-### To Acheive that, you need to create model `Post` , it should have the following attributes :
-- title : char field (max 2048)
-- content : text field.
-- is_published : boolean field, default is True.
-- published_at : datetime field, default is now. (use auto_now_add parameter)
+- Home page displaying the latest published posts
+- Page to create a new post
+- Page to view all posts
+- Post detail page
+- Edit and delete post functionality
+- User registration and login
+- User profile page
+- Edit profile page
+- Arabic and English content support
+- Publish/unpublish post option
+- Dynamic routing with Django URL tags
+- Reusable templates with template inheritance
+- Static files for styling and images
 
-### Design & Layout:
-  - Make sure you use Templates & Templates inheritance to unify the look of the website.
-  - Make sure to use static files if needed, and dynamic URL resolving when linking to your pages.
-  - Generally use best practices (what you learned in previous lessons).
-  - It is up to you how you design it. Use whatever means you need (colors, icons, logo, images, fonts, etc.) .
+## Technologies Used
+
+- Python
+- Django
+- HTML
+- CSS
+- SQLite

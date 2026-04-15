@@ -1,0 +1,111 @@
+<!--
+'''
+File: register.html
+Description:
+    User registration page.
+
+Features:
+    - Registration form
+    - Bilingual headings
+    - Shared auth styling
+'''
+-->
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == 'en' %}Register | Blogger{% else %}إنشاء حساب | Blogger{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Auth section -->
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card reveal-up">
+            <div class="form-heading">
+                <span class="section-subtitle">
+                    {% if current_lang == 'en' %}Join Blogger{% else %}انضم إلى Blogger{% endif %}
+                </span>
+
+                <h1>
+                    {% if current_lang == 'en' %}Create your account{% else %}أنشئ حسابك{% endif %}
+                </h1>
+
+                <p>
+                    {% if current_lang == 'en' %}
+                        Start publishing articles, managing your profile, and sharing bilingual content.
+                    {% else %}
+                        ابدأ بنشر مقالاتك وإدارة ملفك الشخصي ومشاركة محتوى ثنائي اللغة.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Register section -->
+            <form method="post" class="custom-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">
+                        {% if current_lang == 'en' %}Username{% else %}اسم المستخدم{% endif %}
+                    </label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="form-errors">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">
+                        {% if current_lang == 'en' %}Email{% else %}البريد الإلكتروني{% endif %}
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="form-errors">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">
+                        {% if current_lang == 'en' %}Password{% else %}كلمة المرور{% endif %}
+                    </label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="form-errors">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">
+                        {% if current_lang == 'en' %}Confirm Password{% else %}تأكيد كلمة المرور{% endif %}
+                    </label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="form-errors">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">
+                        {% if current_lang == 'en' %}Create Account{% else %}إنشاء الحساب{% endif %}
+                    </button>
+
+                    <a href="{% url 'core:login' %}?lang={{ current_lang }}" class="secondary-btn">
+                        {% if current_lang == 'en' %}Login{% else %}تسجيل الدخول{% endif %}
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

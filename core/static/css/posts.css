@@ -1,0 +1,348 @@
+/*
+|--------------------------------------------------------------------------
+| File: posts.css
+| Description: Styles for posts list and post detail pages
+|--------------------------------------------------------------------------
+*/
+
+.page-hero {
+    padding-top: 52px;
+}
+
+.page-hero h1 {
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    line-height: 1.1;
+    margin-bottom: 14px;
+}
+
+.page-hero p {
+    max-width: 760px;
+    color: var(--muted-text);
+    line-height: 1.95;
+    font-size: 1.04rem;
+}
+
+.search-section {
+    padding-top: 28px;
+}
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.search-form input {
+    flex: 1;
+    min-height: 58px;
+    padding: 0 18px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    outline: none;
+}
+
+.search-form input::placeholder {
+    color: var(--muted-text);
+}
+
+.search-form button {
+    min-width: 130px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent-color), #ff6f61);
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.search-form button:hover {
+    transform: translateY(-2px);
+}
+
+.posts-list-section {
+    padding-top: 34px;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.post-card {
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+
+.post-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+}
+
+.post-image-wrapper {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+}
+
+.post-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.post-card:hover .post-image-wrapper img {
+    transform: scale(1.08);
+}
+
+.post-card-content {
+    padding: 22px;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted-text);
+    font-size: 0.86rem;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.author-link {
+    transition: 0.25s ease;
+}
+
+.author-link:hover {
+    color: var(--text-color);
+}
+
+.post-card h3 {
+    font-size: 1.3rem;
+    line-height: 1.55;
+    margin-bottom: 14px;
+}
+
+.post-card p {
+    color: var(--muted-text);
+    line-height: 1.85;
+    margin-bottom: 18px;
+}
+
+.read-more-link {
+    color: var(--accent-color);
+    font-weight: 800;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 60px;
+    border-radius: 30px;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+}
+
+/* Post detail shared styles */
+.post-detail-section,
+.comments-section {
+    padding-top: 40px;
+}
+
+.post-detail-card,
+.comments-card {
+    padding: 30px;
+    border-radius: 30px;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+.post-detail-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    color: var(--muted-text);
+    margin-bottom: 16px;
+}
+
+.post-detail-card h1 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.2;
+    margin-bottom: 22px;
+}
+
+.post-media {
+    margin: 24px 0;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.detail-cover-image,
+.detail-video {
+    width: 100%;
+    border-radius: 24px;
+}
+
+.post-body {
+    color: var(--text-color);
+    line-height: 2;
+    font-size: 1.03rem;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+}
+
+.comments-card h2 {
+    margin-bottom: 22px;
+}
+
+.comments-list {
+    margin-top: 24px;
+    display: grid;
+    gap: 16px;
+}
+
+.comment-box {
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-color);
+}
+
+.comment-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 10px;
+    color: var(--muted-text);
+}
+
+.custom-form textarea,
+.custom-form input,
+.custom-form select {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    outline: none;
+}
+
+.custom-form textarea::placeholder,
+.custom-form input::placeholder {
+    color: var(--muted-text);
+}
+
+.muted-text {
+    color: var(--muted-text);
+}
+
+.danger-link {
+    color: #ff8b8b;
+    font-weight: 800;
+}
+/* Delete page */
+.delete-card {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 42px;
+}
+
+.delete-card h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 18px;
+}
+
+.delete-card p {
+    color: var(--muted-text);
+    line-height: 1.9;
+    margin-bottom: 30px;
+}
+
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.delete-actions .primary-btn,
+.delete-actions .secondary-btn {
+    min-width: 180px;
+}
+
+
+/* 991 */
+@media (max-width: 991px) {
+    .posts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 767 */
+@media (max-width: 767px) {
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-form button {
+        min-height: 54px;
+    }
+
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .post-detail-card,
+    .comments-card {
+        padding: 22px;
+    }
+    
+}
+
+/* 480 */
+@media (max-width: 480px) {
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .page-hero p,
+    .post-body,
+    .post-card p {
+        font-size: 0.94rem;
+    }
+
+    .post-card-content {
+        padding: 18px;
+    }
+
+    .detail-actions {
+        flex-direction: column;
+    }
+
+    .detail-actions .primary-btn,
+    .detail-actions .secondary-btn {
+        width: 100%;
+    }
+}

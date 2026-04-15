@@ -1,0 +1,221 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == 'ar' %}الرئيسية | Blogger{% else %}Home | Blogger{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="blog-home">
+    <div class="container">
+
+        <!-- Featured Hero Card -->
+        <section class="featured-section">
+            <div class="featured-card">
+                <div class="featured-media">
+                    <img src="{% static 'images/blogger.png' %}" alt="Featured article">
+                    <div class="featured-overlay"></div>
+                </div>
+
+                <div class="featured-content">
+                    <h1 class="featured-title">
+                        {% if current_lang == 'ar' %}
+                           قم بانشاء مقالاتك و شارك افكارك
+
+                        {% else %}
+                            Create elegant blog posts and share
+                            your ideas with a clean modern experience
+                        {% endif %}
+                    </h1>
+
+                    <p class="featured-text">
+                        {% if current_lang == 'ar' %}
+                            منصة تدوين تساعدك على كتابة المقالات، استعراض المحتوى،
+                            وقراءة التدوينات
+                        {% else %}
+                            A bilingual blogging platform that helps you write articles,
+                            explore content, and enjoy a clean premium reading experience.
+                        {% endif %}
+                    </p>
+
+                    <div class="featured-actions">
+                        <a href="{% url 'core:post_create' %}" class="primary-btn">
+                            {% if current_lang == 'ar' %}ابدء الكتابة{% else %}Start Writing{% endif %}
+                        </a>
+
+                        <a href="{% url 'core:post_list' %}" class="secondary-btn">
+                            {% if current_lang == 'ar' %}تصفح المقالات{% else %}Browse Articles{% endif %}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+<section class="posts-section">
+    <div class="section-head">
+        <h2>
+            {% if current_lang == 'ar' %}أحدث المقالات{% else %}Recent blog posts{% endif %}
+        </h2>
+        <a href="{% url 'core:post_list' %}?lang={{ current_lang }}" class="view-all-link">
+            {% if current_lang == 'ar' %}عرض الكل{% else %}View all{% endif %}
+        </a>
+    </div>
+
+    <div class="posts-grid">
+
+        {% for post in latest_posts %}
+            <article class="post-card">
+                <a href="{% url 'core:post_detail' post_id=post.id %}?lang={{ current_lang }}" class="post-image">
+                    {% if post.cover_image %}
+                        <img src="{{ post.cover_image.url }}" alt="Post image">
+                    {% else %}
+                        <img src="{% static 'images/post1.png' %}" alt="Post image">
+                    {% endif %}
+                </a>
+                <div class="post-body">
+                    <h3 class="post-title">
+                        {% if current_lang == 'ar' %}
+                            {{ post.title_ar|default:post.title_en }}
+                        {% else %}
+                            {{ post.title_en|default:post.title_ar }}
+                        {% endif %}
+                    </h3>
+                    <p class="post-excerpt">
+                        {% if current_lang == 'ar' %}
+                            {{ post.content_ar|default:post.content_en|truncatechars:120 }}
+                        {% else %}
+                            {{ post.content_en|default:post.content_ar|truncatechars:120 }}
+                        {% endif %}
+                    </p>
+                    <div class="post-meta">
+                        <span>{{ post.author.username }}</span>
+                        <span>•</span>
+                        <span>{{ post.published_at|date:"d M Y - h:i A" }}</span>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+
+        <article class="post-card">
+            <a href="#" class="post-image">
+                <img src="{% static 'images/post1.png' %}" alt="Post image">
+            </a>
+            <div class="post-body">
+                <h3 class="post-title">
+                    {% if current_lang == 'ar' %}كيف تبدا في كتابة مقالات احترافية{% else %}How to start writing professional articles{% endif %}
+                </h3>
+                <p class="post-excerpt">
+                    {% if current_lang == 'ar' %}خطوات بسيطة تساعدك على تنظيم الفكرة، كتابة عنوان قوي، وبناء محتوى جذاب للقارئ.{% else %}Simple steps to organize your ideas, write stronger headlines, and build engaging content.{% endif %}
+                </p>
+                <div class="post-meta">
+                    <span>{% if current_lang == 'ar' %}ريم{% else %}Reem{% endif %}</span>
+                    <span>•</span>
+                    <span>15 Apr 2026</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <a href="#" class="post-image">
+                <img src="{% static 'images/post2.png' %}" alt="Post image">
+            </a>
+            <div class="post-body">
+                <h3 class="post-title">
+                    {% if current_lang == 'ar' %}بناء واجهة تدوين أنيقة {% else %}Building a polished blog UI with Django{% endif %}
+                </h3>
+                <p class="post-excerpt">
+                    {% if current_lang == 'ar' %}تعلم كيف تنظم الصفحة وتعرض المقالات بطريقة حديثة وسلسة.{% else %}Learn how to structure your homepage and display posts in a clean modern layout.{% endif %}
+                </p>
+                <div class="post-meta">
+                    <span>{% if current_lang == 'ar' %}فريق Blogger{% else %}Blogger Team{% endif %}</span>
+                    <span>•</span>
+                    <span>14 Apr 2026</span>
+                </div>
+            </div></article>
+
+        <article class="post-card">
+            <a href="#" class="post-image">
+                <img src="{% static 'images/post3.png' %}" alt="Post image">
+            </a>
+            <div class="post-body">
+                <h3 class="post-title">
+                    {% if current_lang == 'ar' %}أفضل أساليب تنسيق المقال قبل النشر{% else %}Best ways to format an article before publishing{% endif %}
+                </h3>
+                <p class="post-excerpt">
+                    {% if current_lang == 'ar' %}اختيار المسافات، العناوين، والصور المناسبة يعطي مقالك مظهرًا أقوى وأكثر أناقة.{% else %}Spacing, headings, and the right imagery can make your article feel far more premium.{% endif %}
+                </p>
+                <div class="post-meta">
+                    <span>{% if current_lang == 'ar' %}الإدارة{% else %}Admin{% endif %}</span>
+                    <span>•</span>
+                    <span>13 Apr 2026</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <a href="#" class="post-image">
+                <img src="{% static 'images/post4.png' %}" alt="Post image">
+            </a>
+            <div class="post-body">
+                <h3 class="post-title">
+                    {% if current_lang == 'ar' %}كيف تجعل تجربة القراءة أفضل للمستخدم{% else %}How to improve the reading experience{% endif %}
+                </h3>
+                <p class="post-excerpt">
+                    {% if current_lang == 'ar' %}واجهة نظيفة وخط متوازن ومسافات مدروسة تصنع فرقًا واضحًا في الموقع.{% else %}A clean interface, balanced typography, and thoughtful spacing elevate the full experience.{% endif %}
+                </p>
+                <div class="post-meta">
+                    <span>{% if current_lang == 'ar' %}Blogger{% else %}Blogger{% endif %}</span>
+                    <span>•</span>
+                    <span>12 Apr 2026</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <a href="#" class="post-image">
+                <img src="{% static 'images/post5.png' %}" alt="Post image">
+            </a>
+            <div class="post-body">
+                <h3 class="post-title">
+                    {% if current_lang == 'ar' %}أفكار لمحتوى تقني يجذب القراء{% else %}Content ideas for a stronger tech blog{% endif %}
+                </h3>
+                <p class="post-excerpt">
+                    {% if current_lang == 'ar' %}اختار مواضيع قريبة من اهتمامات الجمهور و اكتبها بلغة واضحة ومختصرة.{% else %}Choose topics your audience cares about and present them in a simple, clear voice.{% endif %}
+                </p>
+                <div class="post-meta">
+                    <span>{% if current_lang == 'ar' %}الكاتب{% else %}Author{% endif %}</span>
+                    <span>•</span>
+                    <span>11 Apr 2026</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <a href="#" class="post-image">
+                <img src="{% static 'images/post6.png' %}" alt="Post image">
+            </a>
+            <div class="post-body">
+                <h3 class="post-title">
+                    {% if current_lang == 'ar' %}طريقة عرض المقالات بشكل احترافي{% else %}Displaying articles in a more premium way{% endif %}
+                </h3>
+                <p class="post-excerpt">
+                    {% if current_lang == 'ar' %}استخدم بطاقات بسيطة، صور متناسقة، وعناوين أوضح لتحسين مظهر الصفحة.{% else %}Use clean cards, consistent images, and stronger headlines for a more refined homepage.{% endif %}
+                </p>
+                <div class="post-meta">
+                    <span>{% if current_lang == 'ar' %}Blogger UI{% else %}Blogger UI{% endif %}</span>
+                    <span>•</span>
+                    <span>10 Apr 2026</span>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+{% endblock %}
